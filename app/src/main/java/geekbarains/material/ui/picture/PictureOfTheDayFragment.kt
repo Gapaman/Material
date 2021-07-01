@@ -19,6 +19,8 @@ import geekbarains.material.ui.api.ApiActivity
 import geekbarains.material.ui.apibottom.ApiBottomActivity
 import geekbarains.material.ui.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main_explanation_text.*
+
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -30,7 +32,7 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.getData()
-            .observe(this@PictureOfTheDayFragment, Observer<PictureOfTheDayData> { renderData(it) })
+            .observe(this@PictureOfTheDayFragment, Observer { renderData(it) })
     }
 
     override fun onCreateView(
@@ -48,6 +50,9 @@ class PictureOfTheDayFragment : Fragment() {
                 data = Uri.parse("https://en.wikipedia.org/wiki/${input_edit_text.text.toString()}")
             })
         }
+        /*activity?.let {
+            text_view.typeface = Typeface.createFromAsset(it.assets, "Niceyear.ttf")
+        }*/
         setBottomAppBar(view)
     }
 
@@ -94,6 +99,9 @@ class PictureOfTheDayFragment : Fragment() {
                         error(R.drawable.ic_load_error_vector)
                         placeholder(R.drawable.ic_no_photo_vector)
                     }
+                }
+                serverResponseData.explanation?.let {
+                    text_view.text = it
                 }
             }
             is PictureOfTheDayData.Loading -> {
